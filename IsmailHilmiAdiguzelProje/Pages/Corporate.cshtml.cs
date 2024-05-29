@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace IsmailHilmiAdiguzelProje.Pages
 {
-    public class Index1Model : PageModel
+    public class CorporateModel : PageModel
     {
         public void OnGet()
         {
-
         }
     }
 }
