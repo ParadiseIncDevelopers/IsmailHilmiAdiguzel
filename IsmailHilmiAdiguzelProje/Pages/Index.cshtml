@@ -14,7 +14,17 @@
         <div class="container ">
             <div class="heading_container heading_center">
                 <h2>
-                    Our <span>Services</span>
+                    @{
+                        if (LoginModel.UserNameAndSurname != null)
+                        {
+                            <div>Welcome <span> @LoginModel.UserNameAndSurname</span></div>
+                        }
+                        else
+                        {
+                            <div>Our <span> Services</span></div>
+                        }
+                    }
+                    
                 </h2>
                 <p>
                     There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
