@@ -1,24 +1,24 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace IsmailHilmiAdiguzelProje.Pages
+namespace APITester
 {
-    public class IndexModel : PageModel
+    using System;
+    using System.Text.Json.Serialization;
+
+    public class OfferModel
     {
-        public IndexModel()
-        {
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
 
-        }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
-        public void OnGet()
-        {
-
-        }
-    }
-
-    /**
-     [JsonPropertyName("description")]
-        public string? Description { get; set; }
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         [JsonPropertyName("require_approval")]
         public int RequireApproval { get; set; }
@@ -27,28 +27,28 @@ namespace IsmailHilmiAdiguzelProje.Pages
         public int RequireTermsAndConditions { get; set; }
 
         [JsonPropertyName("terms_and_conditions")]
-        public string? TermsAndConditions { get; set; }
+        public string TermsAndConditions { get; set; }
 
         [JsonPropertyName("preview_url")]
-        public string? PreviewUrl { get; set; }
+        public string PreviewUrl { get; set; }
 
         [JsonPropertyName("currency")]
-        public string? Currency { get; set; }
+        public string Currency { get; set; }
 
         [JsonPropertyName("default_payout")]
-        public string? DefaultPayout { get; set; }
+        public string DefaultPayout { get; set; }
 
         [JsonPropertyName("protocol")]
-        public string? Protocol { get; set; }
+        public string Protocol { get; set; }
 
         [JsonPropertyName("status")]
-        public string? Status { get; set; }
+        public string Status { get; set; }
 
         [JsonPropertyName("expiration_date")]
         public DateTime ExpirationDate { get; set; }
 
         [JsonPropertyName("payout_type")]
-        public string? PayoutType { get; set; }
+        public string PayoutType { get; set; }
 
         [JsonPropertyName("percent_payout")]
         public decimal PercentPayout { get; set; }
@@ -78,10 +78,10 @@ namespace IsmailHilmiAdiguzelProje.Pages
         public int EmailInstructions { get; set; }
 
         [JsonPropertyName("email_instructions_from")]
-        public string? EmailInstructionsFrom { get; set; }
+        public string EmailInstructionsFrom { get; set; }
 
         [JsonPropertyName("email_instructions_subject")]
-        public string? EmailInstructionsSubject { get; set; }
+        public string EmailInstructionsSubject { get; set; }
 
         [JsonPropertyName("enforce_secure_tracking_link")]
         public int EnforceSecureTrackingLink { get; set; }
@@ -90,7 +90,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
         public int HasGoalsEnabled { get; set; }
 
         [JsonPropertyName("default_goal_name")]
-        public string? DefaultGoalName { get; set; }
+        public string DefaultGoalName { get; set; }
 
         [JsonPropertyName("modified")]
         public long Modified { get; set; }
@@ -102,22 +102,22 @@ namespace IsmailHilmiAdiguzelProje.Pages
         public int UsePayoutGroups { get; set; }
 
         [JsonPropertyName("link_platform")]
-        public string? LinkPlatform { get; set; }
+        public string LinkPlatform { get; set; }
 
         [JsonPropertyName("is_expired")]
         public int IsExpired { get; set; }
 
         [JsonPropertyName("dne_download_url")]
-        public string? DneDownloadUrl { get; set; }
+        public string DneDownloadUrl { get; set; }
 
         [JsonPropertyName("dne_unsubscribe_url")]
-        public string? DneUnsubscribeUrl { get; set; }
+        public string DneUnsubscribeUrl { get; set; }
 
         [JsonPropertyName("dne_third_party_list")]
         public bool DneThirdPartyList { get; set; }
 
         [JsonPropertyName("approval_status")]
-        public string? ApprovalStatus { get; set; }
-     
-     */
+        public string ApprovalStatus { get; set; }
+    }
+
 }
