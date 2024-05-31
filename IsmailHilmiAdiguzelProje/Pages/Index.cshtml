@@ -4,6 +4,7 @@
 @using IsmailHilmiAdiguzelProje.Models
 @{
     ViewData["SubPageClass"] = "sub_page";
+    ViewData["Title"] = "Ana sayfa";
     List<String> images = new();
 }
 
@@ -67,10 +68,8 @@
                                             <img src="@images[i]" alt="">
                                         </div>
                                         <div class="detail-box">
-                                            <h5>@elements[i]["Offer"].Id</h5>
-                                            <p>@elements[i]["Offer"].Name</p>
-
-                                            <a href="javascript:void(0);" onclick="captureClickAndRedirect('@elements[i]["Offer"].Url', '@LoginModel.UserNameAndSurname')">Read More</a>
+                                            <h5>@elements[i]["Offer"].Name</h5>
+                                            <a href="javascript:void(0);" onclick="captureClickAndRedirect('@elements[i]["Offer"].Url', '@LoginModel.UserNameAndSurname')">Tıklayın</a>
                                         </div>
                                     </div>
                                 </div>
