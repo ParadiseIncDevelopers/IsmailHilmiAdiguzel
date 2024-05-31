@@ -105,8 +105,8 @@
                     window.location.href = '@Url.Page("/Login")';
                 }
             },
-            error: function () {
-                alert('An error occurred while recording the click.');
+            error: function (err) {
+                console.log(err);
             }
         });
     }

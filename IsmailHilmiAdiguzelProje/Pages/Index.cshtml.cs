@@ -1,3 +1,4 @@
+using Google.Protobuf.WellKnownTypes;
 using IsmailHilmiAdiguzelProje.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -26,23 +27,27 @@ namespace IsmailHilmiAdiguzelProje.Pages
             {
                 return RedirectToPage("/Login");
             }
-            else 
+            else
             {
                 // Create a MySqlConnection object
                 using (var connection = new MySqlConnection(_connectionString))
                 {
-                    DateTime clickDate = DateTime.Now;
+                    // Get the current datetime in UTC
+                    DateTime clickDateUtc = DateTime.UtcNow;
+
+                    // Convert UTC datetime to local time (Turkey time)
+                    DateTime clickDateLocal = clickDateUtc.ToLocalTime();
 
                     // SQL command to insert a new record into user_click_counters table
-                    string insertSql = string.Format("INSERT INTO hangel.users_clicks_counters (click_website, click_date, click_name) VALUES ('{0}', '{1}', '{2}')", clickWebsite, clickDate, clickName);
+                    string insertSql = "INSERT INTO hangel.users_clicks_counters (click_website, click_date, click_name) VALUES (@clickWebsite, @clickDate, @clickName)";
 
                     // Create a MySqlCommand object
                     using (var command = new MySqlCommand(insertSql, connection))
                     {
                         // Add parameters to the command
-                        command.Parameters.AddWithValue("clickWebsite", clickWebsite);
-                        command.Parameters.AddWithValue("clickDate", clickDate);
-                        command.Parameters.AddWithValue("clickName", clickName);
+                        command.Parameters.AddWithValue("@clickWebsite", clickWebsite);
+                        command.Parameters.AddWithValue("@clickDate", clickDateLocal); // Use local time
+                        command.Parameters.AddWithValue("@clickName", clickName);
 
                         try
                         {
@@ -56,14 +61,16 @@ namespace IsmailHilmiAdiguzelProje.Pages
                         {
                             // Handle any exceptions
                             // For simplicity, you can just return a generic error message
-                            return StatusCode(500, "An error occurred while recording the click.");
+                            return StatusCode(500, ex.Message);
                         }
                     }
-                }
-
-                // Return an empty result
-                return new EmptyResult();
+                } 
+          
             }
+
+            // Return an empty result
+            return new EmptyResult();
+            
         }
 
         /**
