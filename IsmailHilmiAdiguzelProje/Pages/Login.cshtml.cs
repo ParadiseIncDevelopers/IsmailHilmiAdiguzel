@@ -8,6 +8,8 @@ namespace IsmailHilmiAdiguzelProje.Pages
     {
         public static string? UserNameAndSurname { get; set; }
 
+        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;";
+
         public IActionResult OnGet()
         {
             // Return the login page
@@ -16,11 +18,9 @@ namespace IsmailHilmiAdiguzelProje.Pages
 
         public async Task<IActionResult> OnPostLoginUserAsync(string email, string password)
         {
-            // Connection string for MySQL
-            string connectionString = "Server=127.0.0.1;Port=3306;Database=users;Uid=root;Pwd=yusufsalim_1997;";
 
             // SQL command to query the user based on email and password
-            string queryUserSql = $"SELECT name, surname FROM users_main WHERE email = '{email}' AND password = '{password}'";
+            string queryUserSql = $"SELECT name, surname FROM users_table WHERE email = '{email}' AND password = '{password}'";
 
             // Create MySqlConnection object
             using (MySqlConnection connection = new(connectionString))

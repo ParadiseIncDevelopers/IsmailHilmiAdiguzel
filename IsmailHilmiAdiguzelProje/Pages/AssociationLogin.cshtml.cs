@@ -6,17 +6,20 @@ namespace IsmailHilmiAdiguzelProje.Pages
 {
     public class AssociationLoginModel : PageModel
     {
-        private readonly static string connectionString = "Server=127.0.0.1;Port=3306;Database=users;Uid=root;Pwd=yusufsalim_1997;";
+        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;";
+
+        public static string? AssociationNameAndSurname { get; set; }
 
         public void OnGet()
         {
+
         }
 
         public async Task<IActionResult> OnPostLoginUserAsync(string email, string password)
         {
 
             // SQL command to query the user based on email and password
-            string queryUserSql = $"SELECT name, surname FROM users_main WHERE email = '{email}' AND password = '{password}'";
+            string queryUserSql = $"SELECT name, surname FROM users_table WHERE email = '{email}' AND password = '{password}'";
 
             // Create MySqlConnection object
             using (MySqlConnection connection = new(connectionString))
@@ -39,7 +42,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
                             if (reader.Read())
                             {
                                 // User found, set the UserNameAndSurname property
-                                UserNameAndSurname = $"{reader["name"]} {reader["surname"]}";
+                                AssociationNameAndSurname = $"{reader["name"]} {reader["surname"]}";
 
                                 // Redirect to the Index page
                                 return RedirectToPage("/Index");

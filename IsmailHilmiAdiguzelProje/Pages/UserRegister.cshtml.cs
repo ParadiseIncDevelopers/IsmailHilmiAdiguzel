@@ -8,7 +8,6 @@ namespace IsmailHilmiAdiguzelProje.Pages
     [BindProperties]
     public class UserRegisterModel : PageModel
     {
-
         [Key]
         public int Id { get; set; }
 
@@ -34,6 +33,8 @@ namespace IsmailHilmiAdiguzelProje.Pages
             ErrorMessage = "Password must have at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character")]
         public string? Password { get; set; }
 
+        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;";
+
         public void OnGet()
         {
         }
@@ -41,12 +42,12 @@ namespace IsmailHilmiAdiguzelProje.Pages
         public async Task<IActionResult> OnPostRegisterUser() 
         {
             // Connection string for MySQL
-            string connectionString = "Server=127.0.0.1;Port=3306;Database=users;Uid=root;Pwd=yusufsalim_1997;";
+            
 
             if (ModelState.IsValid)
             {
                 // SQL command to insert a new user
-                string insertUserSql = string.Format("INSERT INTO users.users_main (name, surname, email, phone_number, password) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')", Name, Surname, Email, PhoneNumber, Password);
+                string insertUserSql = string.Format("INSERT INTO hangel.users_table (name, surname, email, phone_number, password, user_type) VALUES ('{0}', '{1}', '{2}', '{3}', {4},'USER')", Name, Surname, Email, PhoneNumber, Password);
 
                 // Create MySqlConnection object
                 using (MySqlConnection connection = new(connectionString))
@@ -60,6 +61,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
                         command.Parameters.AddWithValue("email", Email);
                         command.Parameters.AddWithValue("phoneNumber", PhoneNumber);
                         command.Parameters.AddWithValue("password", Password);
+                        command.Parameters.AddWithValue("userType", "USER");
 
                         try
                         {

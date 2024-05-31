@@ -69,7 +69,8 @@
                                         <div class="detail-box">
                                             <h5>@elements[i]["Offer"].Id</h5>
                                             <p>@elements[i]["Offer"].Name</p>
-                                            <a href="@elements[i]["Offer"].Url"> Read More </a>
+
+                                            <a href="javascript:void(0);" onclick="captureClickAndRedirect('@elements[i]["Offer"].Url', '@LoginModel.UserNameAndSurname')">Read More</a>
                                         </div>
                                     </div>
                                 </div>
@@ -87,4 +88,28 @@
     </div>
 </section>
 
+
+<script>
+    function captureClickAndRedirect(clickWebsite, clickName) {
+        // AJAX call to send the captured data to the Razor Page handler method
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Page("index", "counterclicklink")',
+            data: { clickWebsite: clickWebsite, clickName: clickName },
+            success: function (response) {
+                if (clickName != '') {
+                    // Redirect to clickWebsite if clickName is not null
+                    window.location.href = clickWebsite;
+                } else {
+                    // Redirect to the login page if clickName is null
+                    window.location.href = '@Url.Page("/Login")';
+                }
+            },
+            error: function () {
+                alert('An error occurred while recording the click.');
+            }
+        });
+    }
+
+</script>
 <!-- end service section -->

@@ -8,7 +8,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
     public class AssociationRegisterModel : PageModel
     {
         // Connection string for MySQL
-        private readonly static string connectionString = "Server=127.0.0.1;Port=3306;Database=users;Uid=root;Pwd=yusufsalim_1997;";
+        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;";
 
         [Key]
         public int Id { get; set; }
@@ -44,7 +44,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
             if (ModelState.IsValid)
             {
                 // SQL command to insert a new user
-                string insertUserSql = string.Format("INSERT INTO users.users_association (name, surname, email, phone_number, password, user_type) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', 'ASSOCIATION')", Name, Surname, Email, PhoneNumber, Password);
+                string insertUserSql = string.Format("INSERT INTO hangel.users_association (name, surname, email, phone_number, password, user_type) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', 'ASSOCIATION')", Name, Surname, Email, PhoneNumber, Password);
 
                 // Create MySqlConnection object
                 using (MySqlConnection connection = new(connectionString))
