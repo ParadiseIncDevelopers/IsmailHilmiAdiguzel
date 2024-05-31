@@ -1,12 +1,11 @@
 ﻿@page
 @model IsmailHilmiAdiguzelProje.Pages.AssociationLoginModel
 @{
-
+    ViewData["Title"] = "Dernek giriş";
 }
 
 <div class="form-container">
-    <h1>Subscribe</h1>
-    <p>Enter your email address to subscribe to our newsletter.</p>
+    <h1>Dernek giriş</h1>
     <form asp-page-handler="submitForm" method="post">
         <input type="email" class="input" name="email" placeholder="Enter email">
         <input type="password" class="input" name="password" placeholder="Enter password">

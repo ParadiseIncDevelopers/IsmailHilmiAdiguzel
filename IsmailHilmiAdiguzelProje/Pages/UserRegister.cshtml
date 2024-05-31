@@ -2,10 +2,10 @@
 @model IsmailHilmiAdiguzelProje.Pages.UserRegisterModel
 @{
     Layout = "_FormLayout"; 
+    ViewData["Title"] = "Kullanıcı kayıt";
 }
 <div class="form-container">
-    <h1>Subscribe</h1>
-    <p>Enter your email address to subscribe to our newsletter.</p>
+    <h1>Kullanıcı kayıt</h1>
     <form asp-page-handler="registerUser" method="post">
         <span asp-validation-for="Name"></span>
         <input type="text" class="input" asp-for="Name" placeholder="Adınız">
