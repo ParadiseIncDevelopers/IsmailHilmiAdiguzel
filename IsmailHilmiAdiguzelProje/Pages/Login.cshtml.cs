@@ -1,14 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MySql.Data.MySqlClient;
+using System.ComponentModel.DataAnnotations;
 
 namespace IsmailHilmiAdiguzelProje.Pages
 {
+    [BindProperties]
     public class LoginModel : PageModel
     {
-        public static string? UserNameAndSurname { get; set; }
 
-        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;";
+        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;default command timeout=20;";
+
+        [Required]
+        [MaxLength(100)]
+        [EmailAddress]
+        public string? Email { get; set; }
+
+        [Required]
+        public string? Password { get; set; }
 
         public IActionResult OnGet()
         {
@@ -16,11 +25,11 @@ namespace IsmailHilmiAdiguzelProje.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostLoginUserAsync(string email, string password)
+        public async Task<IActionResult> OnPostLoginUserAsync()
         {
 
             // SQL command to query the user based on email and password
-            string queryUserSql = $"SELECT name, surname FROM users_table WHERE email = '{email}' AND password = '{password}'";
+            string queryUserSql = $"SELECT name, surname FROM users_table WHERE email = '{Email}' AND password = '{Password}'";
 
             // Create MySqlConnection object
             using (MySqlConnection connection = new(connectionString))
@@ -29,8 +38,8 @@ namespace IsmailHilmiAdiguzelProje.Pages
                 using (MySqlCommand command = new(queryUserSql, connection))
                 {
                     // Add parameters to the command
-                    command.Parameters.AddWithValue("email", email);
-                    command.Parameters.AddWithValue("password", password);
+                    command.Parameters.AddWithValue("email", Email);
+                    command.Parameters.AddWithValue("password", Password);
 
                     try
                     {
@@ -43,7 +52,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
                             if (reader.Read())
                             {
                                 // User found, set the UserNameAndSurname property
-                                UserNameAndSurname = $"{reader["name"]} {reader["surname"]}";
+                                TempData["NameAndSurname"] = $"{reader["name"]} {reader["surname"]}";
 
                                 // Redirect to the Index page
                                 return RedirectToPage("/Index");

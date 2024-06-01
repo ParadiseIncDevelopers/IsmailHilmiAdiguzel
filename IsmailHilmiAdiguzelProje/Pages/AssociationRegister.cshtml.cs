@@ -8,7 +8,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
     public class AssociationRegisterModel : PageModel
     {
         // Connection string for MySQL
-        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;";
+        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;default command timeout=20;";
 
         [Key]
         public int Id { get; set; }

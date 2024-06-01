@@ -9,6 +9,8 @@ namespace IsmailHilmiAdiguzelProje.Pages
 {
     public class IndexModel : PageModel
     {
+        public static string NameAndSurname { get; set; }
+
         public IndexModel()
         {
 
@@ -19,7 +21,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
 
         }
 
-        private readonly string _connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;";
+        private readonly string _connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;default command timeout=20;";
 
         public async Task<IActionResult> OnGetCounterClickLink(string clickWebsite, string clickName)
         {
@@ -107,8 +109,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
             [JsonPropertyName("payout_type")]
             public string? PayoutType { get; set; }
 
-            [JsonPropertyName("percent_payout")]
-            public decimal PercentPayout { get; set; }
+            
 
             [JsonPropertyName("allow_multiple_conversions")]
             public int AllowMultipleConversions { get; set; }

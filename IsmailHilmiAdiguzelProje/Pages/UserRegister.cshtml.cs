@@ -31,7 +31,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
         [Required]
         public string? Password { get; set; }
 
-        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;";
+        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;default command timeout=20;";
 
         public void OnGet()
         {
@@ -45,7 +45,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
             if (ModelState.IsValid)
             {
                 // SQL command to insert a new user
-                string insertUserSql = string.Format("INSERT INTO hangel.users_table (name, surname, email, phone_number, password, user_type) VALUES ('{0}', '{1}', '{2}', '{3}', {4},'USER')", Name, Surname, Email, PhoneNumber, Password);
+                string insertUserSql = string.Format("INSERT INTO hangel.users_table (name, surname, email, phone_number, password, user_type) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', 'USER')", Name, Surname, Email, PhoneNumber, Password);
 
                 // Create MySqlConnection object
                 using (MySqlConnection connection = new(connectionString))

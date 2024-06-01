@@ -5,37 +5,43 @@
 @{
     ViewData["SubPageClass"] = "sub_page";
     ViewData["Title"] = "Ana sayfa";
-    List<String> images = new();
+    Dictionary<string, string> images = new();
+
+    if (TempData["NameAndSurname"] != null)
+    {
+        IndexModel.NameAndSurname = TempData["NameAndSurname"].ToString();
+    }
+
+    
 }
 
 <!-- service section -->
-
 <section class="service_section layout_padding">
     <div class="service_container">
         <div class="container ">
             <div class="heading_container heading_center">
                 <h2>
                     @{
-                        if (LoginModel.UserNameAndSurname != null)
+                        if (IndexModel.NameAndSurname != null)
                         {
-                            <div>Welcome <span> @LoginModel.UserNameAndSurname</span></div>
+                            <div>Hoşgeldiniz : <span> @IndexModel.NameAndSurname</span></div>
                         }
                         else
                         {
-                            <div>Our <span> Services</span></div>
+                            <div><span>Linklerimiz</span></div>
                         }
                     }
                     
                 </h2>
                 <p>
-                    There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
+                    Burada tüm linklerimiz bulunmaktadır.
                 </p>
             </div>
             <div class="row">
                 @{
                     using (var httpClient = new HttpClient())
                     {
-                        using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://reklamaction.api.hasoffers.com/Apiv3/json?api_key=16cae276c0765bbe7e451fde1d1cd9bf69c1e8b05d37b1bc8ec25f68868d52de&Target=Affiliate_OfferFile&Method=findAll&limit=15"))
+                        using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://reklamaction.api.hasoffers.com/Apiv3/json?api_key=16cae276c0765bbe7e451fde1d1cd9bf69c1e8b05d37b1bc8ec25f68868d52de&Target=Affiliate_OfferFile&Method=findAll"))
                         {
                             var httpResponseMessage = await httpClient.SendAsync(request);
                             var getResult = await httpResponseMessage.Content.ReadAsStringAsync();
@@ -43,7 +49,12 @@
                             List<Dictionary<string, OfferImage>> elements = deserializedResponse.Response.Data.OfferImage.Values.ToList();
                             for (int i = 0; i < elements.Count; i++)
                             {
-                                images.Add(elements[i]["OfferFile"].Url);
+                                string offerId = elements[i]["OfferFile"].Offer_id;
+
+                                if (!images.ContainsKey(offerId))
+                                {
+                                    images.Add(offerId, elements[i]["OfferFile"].Url);
+                                }
                             }
                         }
                     }
@@ -51,7 +62,7 @@
                 @{
                     using (var httpClient = new HttpClient())
                     {
-                        using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://reklamaction.api.hasoffers.com/Apiv3/json?api_key=16cae276c0765bbe7e451fde1d1cd9bf69c1e8b05d37b1bc8ec25f68868d52de&Target=Affiliate_Offer&Method=findAll&limit=15"))
+                        using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://reklamaction.api.hasoffers.com/Apiv3/json?api_key=16cae276c0765bbe7e451fde1d1cd9bf69c1e8b05d37b1bc8ec25f68868d52de&Target=Affiliate_Offer&Method=findAll&limit=123"))
                         {
                             var httpResponseMessage = await httpClient.SendAsync(request);
                             var getResult = await httpResponseMessage.Content.ReadAsStringAsync();
@@ -65,11 +76,18 @@
                                 <div class="col-md-4">
                                     <div class="box">
                                         <div class="img-box">
-                                            <img src="@images[i]" alt="">
+                                            @{
+                                                string imageKey = elements[i]["Offer"].Id;
+                                                if (images.ContainsKey(imageKey))
+                                                {
+                                                    <img src="@images[imageKey]" alt="">
+                                                }
+                                            }
                                         </div>
                                         <div class="detail-box">
                                             <h5>@elements[i]["Offer"].Name</h5>
-                                            <a href="javascript:void(0);" onclick="captureClickAndRedirect('@elements[i]["Offer"].Url', '@LoginModel.UserNameAndSurname')">Tıklayın</a>
+                                            <p>% @elements[i]["Offer"].PercentPayout</p>
+                                            <a href="javascript:void(0);" onclick="captureClickAndRedirect('@elements[i]["Offer"].Url', '@IndexModel.NameAndSurname')">Tıklayın</a>
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +104,6 @@
         </div>
     </div>
 </section>
-
 
 <script>
     function captureClickAndRedirect(clickWebsite, clickName) {

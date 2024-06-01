@@ -6,9 +6,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
 {
     public class AssociationLoginModel : PageModel
     {
-        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;";
-
-        public static string? AssociationNameAndSurname { get; set; }
+        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;default command timeout=20;";
 
         public void OnGet()
         {
@@ -42,7 +40,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
                             if (reader.Read())
                             {
                                 // User found, set the UserNameAndSurname property
-                                AssociationNameAndSurname = $"{reader["name"]} {reader["surname"]}";
+                                ViewData["AssociationNameAndSurname"] = $"{reader["name"]} {reader["surname"]}";
 
                                 // Redirect to the Index page
                                 return RedirectToPage("/Index");

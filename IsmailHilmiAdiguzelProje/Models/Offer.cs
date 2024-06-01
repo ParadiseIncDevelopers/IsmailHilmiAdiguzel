@@ -12,6 +12,8 @@ namespace IsmailHilmiAdiguzelProje.Models
         public string? Name { get; set; }
         [JsonPropertyName("preview_url")]
         public string? Url { get; set; }
+        [JsonPropertyName("percent_payout")]
+        public string? PercentPayout { get; set; }
     }
 
     [Serializable]
