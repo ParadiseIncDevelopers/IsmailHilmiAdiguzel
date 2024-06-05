@@ -1,15 +1,17 @@
+using IsmailHilmiAdiguzelProje.Models;
+using IsmailHilmiAdiguzelProje.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MySql.Data.MySqlClient;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace IsmailHilmiAdiguzelProje.Pages
 {
     [BindProperties]
     public class LoginModel : PageModel
     {
-
-        private readonly static string connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;default command timeout=20;";
+        private readonly IUserService _userService;
 
         [Required]
         [MaxLength(100)]
@@ -21,57 +23,28 @@ namespace IsmailHilmiAdiguzelProje.Pages
 
         public IActionResult OnGet()
         {
-            // Return the login page
             return Page();
+        }
+
+        public LoginModel(IUserService userService) 
+        {
+            _userService = userService;
         }
 
         public async Task<IActionResult> OnPostLoginUserAsync()
         {
-
-            // SQL command to query the user based on email and password
-            string queryUserSql = $"SELECT name, surname FROM users_table WHERE email = '{Email}' AND password = '{Password}'";
-
-            // Create MySqlConnection object
-            using (MySqlConnection connection = new(connectionString))
+            if (ModelState.IsValid) 
             {
-                // Create MySqlCommand object
-                using (MySqlCommand command = new(queryUserSql, connection))
-                {
-                    // Add parameters to the command
-                    command.Parameters.AddWithValue("email", Email);
-                    command.Parameters.AddWithValue("password", Password);
+                JsonResult result = (JsonResult) await _userService.ConnectUser(Email, Password);
 
-                    try
-                    {
-                        // Open the connection
-                        await connection.OpenAsync();
+                User? user = JsonSerializer.Deserialize<User>(result.Value.ToString());
 
-                        // Execute the command asynchronously and read the result
-                        using (var reader = await command.ExecuteReaderAsync())
-                        {
-                            if (reader.Read())
-                            {
-                                // User found, set the UserNameAndSurname property
-                                TempData["NameAndSurname"] = $"{reader["name"]} {reader["surname"]}";
-
-                                // Redirect to the Index page
-                                return RedirectToPage("/Index");
-                            }
-                            else
-                            {
-                                // User not found or credentials are incorrect, return to the login page
-                                ModelState.AddModelError(string.Empty, "Invalid email or password.");
-                                return Page();
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // Handle any exceptions
-                        // For simplicity, you can just return a generic error message
-                        return StatusCode(500, "An error occurred while logging in.");
-                    }
-                }
+                TempData["NameAndSurname"] = $"{user.name} {user.surname}";
+                return new JsonResult(result);
+            }
+            else 
+            {
+                return new ForbidResult();
             }
         }
     }
