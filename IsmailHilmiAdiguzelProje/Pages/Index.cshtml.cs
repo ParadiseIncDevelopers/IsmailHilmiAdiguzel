@@ -1,78 +1,64 @@
 using Google.Protobuf.WellKnownTypes;
+using IsmailHilmiAdiguzelProje.Interfaces;
 using IsmailHilmiAdiguzelProje.Models;
+using IsmailHilmiAdiguzelProje.Services.Abstract;
+using IsmailHilmiAdiguzelProje.Services.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MySql.Data.MySqlClient;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace IsmailHilmiAdiguzelProje.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModel, IJsonObjectSerializer<UserClickCounter>
     {
+        private readonly IUserClickCounterService _userClickCounter;
+
         public static string NameAndSurname { get; set; }
 
-        public IndexModel()
+        public IndexModel(IUserClickCounterService userClickCounter)
         {
-
+            _userClickCounter = userClickCounter;
         }
 
         public void OnGet()
         {
 
         }
-
-        private readonly string _connectionString = "Server=hangelyazilim.mysql.database.azure.com;Port=3306;Database=hangel;Uid=yusufsalimozbek;Pwd=hangelyazilim!997;default command timeout=20;";
+        
 
         public async Task<IActionResult> OnGetCounterClickLink(string clickWebsite, string clickName)
         {
             if (clickName == null)
             {
-                return RedirectToPage("/Login");
+                return new JsonResult("LOGIN");
             }
             else
             {
-                // Create a MySqlConnection object
-                using (var connection = new MySqlConnection(_connectionString))
+                DateTime clickDateUtc = DateTime.UtcNow;
+                DateTime clickDateLocal = clickDateUtc.ToLocalTime();
+
+                UserClickCounter counter = new()
                 {
-                    // Get the current datetime in UTC
-                    DateTime clickDateUtc = DateTime.UtcNow;
+                    click_date = clickDateLocal,
+                    click_website = clickWebsite,
+                    click_name = clickName
+                };
+                
+                await _userClickCounter.CountClick(counter);
 
-                    // Convert UTC datetime to local time (Turkey time)
-                    DateTime clickDateLocal = clickDateUtc.ToLocalTime();
-
-                    // SQL command to insert a new record into user_click_counters table
-                    string insertSql = "INSERT INTO hangel.users_clicks_counters (click_website, click_date, click_name) VALUES (@clickWebsite, @clickDate, @clickName)";
-
-                    // Create a MySqlCommand object
-                    using (var command = new MySqlCommand(insertSql, connection))
-                    {
-                        // Add parameters to the command
-                        command.Parameters.AddWithValue("@clickWebsite", clickWebsite);
-                        command.Parameters.AddWithValue("@clickDate", clickDateLocal); // Use local time
-                        command.Parameters.AddWithValue("@clickName", clickName);
-
-                        try
-                        {
-                            // Open the connection
-                            await connection.OpenAsync();
-
-                            // Execute the command asynchronously
-                            await command.ExecuteNonQueryAsync();
-                        }
-                        catch (Exception ex)
-                        {
-                            // Handle any exceptions
-                            // For simplicity, you can just return a generic error message
-                            return StatusCode(500, ex.Message);
-                        }
-                    }
-                } 
-          
+                return Redirect(clickWebsite);
             }
-
-            // Return an empty result
-            return new EmptyResult();
             
+        }
+
+        public UserClickCounter DeserializeObject(object value)
+        {
+            JsonSerializerOptions options = new() { WriteIndented = true };
+            string serializedString = JsonSerializer.Serialize((UserClickCounter) value, options);
+            UserClickCounter? user = JsonSerializer.Deserialize<UserClickCounter>(serializedString);
+            return user;
         }
 
         /**

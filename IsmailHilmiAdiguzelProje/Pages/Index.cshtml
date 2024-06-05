@@ -320,11 +320,11 @@
                 @{
                     if (IndexModel.NameAndSurname != null)
                     {
-                        <h6 class="subtitle">Hoşgeldiniz : <span class="fw-bold"> @IndexModel.NameAndSurname</span></h6>
+                            <h6 class="subtitle">Hoşgeldiniz : <span class="fw-bold"> @IndexModel.NameAndSurname</span></h6>
                     }
                     else
                     {
-                        <div>Linklerimiz</div>
+                            <div>Linklerimiz</div>
                     }
                 }
                 @{
@@ -363,7 +363,7 @@
                             if (double.TryParse(stringValue, out doubleValue))
                             {
                                 string formattedValue = doubleValue.ToString("0.00");
-                                <p class="text-muted">Şu an elimizde bulunan : @formattedValue TRY</p>
+                                    <p class="text-muted">Şu an elimizde bulunan : @formattedValue TRY</p>
                             }
                             else
                             {
@@ -391,30 +391,27 @@
                         for (int i = 0; i < elements.Count; i++)
                         {
                             var element = elements[i];
+                            string ppInString = elements[i]["Offer"].PercentPayout;
+                            double percentPayout = Convert.ToDouble(ppInString);
 
-                            <div class="col-md-3">
-                                <div class="testimonial-box text-center">
-                                    @{
-                                        string ppInString = elements[i]["Offer"].PercentPayout;
-                                        double percentPayout = Convert.ToDouble(ppInString);
-
-                                        if (percentPayout != 0)
-                                        {
+                            if (percentPayout != 0)
+                            {
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="testimonial-box text-center">
+                                            @{
                                             string imageKey = elements[i]["Offer"].Id;
                                             if (images.ContainsKey(imageKey))
                                             {
-                                                <img src="@images[imageKey]" alt="" style="width: 70px; height: 70px;">
+                                                        <img src="@images[imageKey]" alt="" style="width: 75px; height: 75px;" class="shadow rounded-circle">
                                             }
 
-                                            <h5 class="fs-18 fw-semibold mt-4 mb-0">@elements[i]["Offer"].Name</h5>
-                                            <p class="text-muted fs-14">@ppInString</p>
-                                            <a href="javascript:void(0);" onclick="captureClickAndRedirect('@elements[i]["Offer"].Url', '@IndexModel.NameAndSurname')">Tıklayın</a>
-                                        }
-
-                                    }
-                                    
-                                </div>
-                            </div>
+                                                    <h5 class="fs-18 fw-semibold mt-4 mb-0">@elements[i]["Offer"].Name</h5>
+                                                    <p class="text-muted fs-14">@ppInString % </p>
+                                                    <a href="javascript:void(0);" onclick="captureClickAndRedirect('@elements[i]["Offer"].Url', '@IndexModel.NameAndSurname')">Tıklayın</a>
+                                            }
+                                        </div>
+                                    </div>
+                            }
                         }
                     }
                 }
@@ -1044,12 +1041,9 @@
             url: '@Url.Page("index", "counterclicklink")',
             data: { clickWebsite: clickWebsite, clickName: clickName },
             success: function (response) {
-                if (clickName != '') {
-                    // Redirect to clickWebsite if clickName is not null
-                    window.location.href = clickWebsite;
-                } else {
-                    // Redirect to the login page if clickName is null
-                    window.location.href = '@Url.Page("/Login")';
+                if (response.toString() == "LOGIN") 
+                {
+                    $('#loginModal').modal('show');
                 }
             },
             error: function (err) {
