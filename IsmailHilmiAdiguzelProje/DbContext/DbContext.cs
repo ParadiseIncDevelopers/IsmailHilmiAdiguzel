@@ -8,5 +8,6 @@ namespace IsmailHilmiAdiguzelProje
     public class MySQLDataContext(DbContextOptions<MySQLDataContext> options) : DbContext(options)
     {
         public DbSet<User> users_table { get; set; }
+        public DbSet<UserClickCounter> users_clicks_counters { get; set; }
     }
 }

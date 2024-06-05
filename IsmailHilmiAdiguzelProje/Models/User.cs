@@ -5,15 +5,21 @@ using System.Text.Json.Serialization;
 
 namespace IsmailHilmiAdiguzelProje.Models
 {
+    [Serializable]
     public class UserClickCounter
     {
-        public int Id { get; set; }
+        [Key]
+        [JsonPropertyName("id")]
+        public int id { get; set; }
 
-        public string? ClickWebsite { get; set; }
+        [JsonPropertyName("click_website")]
+        public string? click_website { get; set; }
 
-        public DateTime ClickDate { get; set; }
+        [JsonPropertyName("click_date")]
+        public DateTime click_date { get; set; }
 
-        public string? ClickName { get; set; }
+        [JsonPropertyName("click_name")]
+        public string? click_name { get; set; }
     }
 
     [Serializable]
