@@ -21,7 +21,9 @@ namespace IsmailHilmiAdiguzelProje.Services.Concrete
 
         public async Task<IActionResult> ConnectUser(string Email, string Password)
         {
-            User? user = await _dataContext.users_table.AsQueryable().Where(x => x.email == Email && x.password == Password).FirstAsync();
+            User? user = await _dataContext.users_table.AsQueryable()
+                .Where(x => x.email == Email && x.password == Password)
+                .FirstAsync();
 
             if (user != null) 
             {

@@ -5,13 +5,8 @@ using System.Data;
 
 namespace IsmailHilmiAdiguzelProje
 {
-    public class MySQLDataContext : DbContext
+    public class MySQLDataContext(DbContextOptions<MySQLDataContext> options) : DbContext(options)
     {
-        public MySQLDataContext(DbContextOptions<MySQLDataContext> options) : base(options)
-        {
-
-        }
-
         public DbSet<User> users_table { get; set; }
     }
 }

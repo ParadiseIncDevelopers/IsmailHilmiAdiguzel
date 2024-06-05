@@ -2,10 +2,6 @@ using IsmailHilmiAdiguzelProje;
 using IsmailHilmiAdiguzelProje.Services.Abstract;
 using IsmailHilmiAdiguzelProje.Services.Concrete;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using Pomelo.EntityFrameworkCore;
-using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +11,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddDbContextPool<MySQLDataContext>(options =>
 {
-    var connetionString = builder.Configuration.GetConnectionString("DbConnectionString");
-    options.UseMySql(connetionString, ServerVersion.AutoDetect(connetionString));
+    var connectionString = builder.Configuration.GetConnectionString("DbConnectionString");
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 var app = builder.Build();
