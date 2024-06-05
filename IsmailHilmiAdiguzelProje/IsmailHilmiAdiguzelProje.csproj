@@ -7,6 +7,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\css\style.css.map" />
+    <None Include="wwwroot\css\style.min.css.map" />
+    <None Include="wwwroot\fonts\cerebrisans-bold.svg" />
+    <None Include="wwwroot\fonts\cerebrisans-bold.woff2" />
+    <None Include="wwwroot\fonts\cerebrisans-light.svg" />
+    <None Include="wwwroot\fonts\cerebrisans-light.woff2" />
+    <None Include="wwwroot\fonts\cerebrisans-medium.svg" />
+    <None Include="wwwroot\fonts\cerebrisans-medium.woff2" />
+    <None Include="wwwroot\fonts\cerebrisans-regular.svg" />
+    <None Include="wwwroot\fonts\cerebrisans-regular.woff2" />
+    <None Include="wwwroot\fonts\cerebrisans-semibold.svg" />
+    <None Include="wwwroot\fonts\cerebrisans-semibold.woff2" />
+    <None Include="wwwroot\fonts\materialdesignicons-webfont.woff2" />
+    <None Include="wwwroot\js\app.js" />
+    <None Include="wwwroot\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\js\counter.init.js" />
+    <None Include="wwwroot\js\swiper-bundle.min.js" />
+    <None Include="wwwroot\js\swiper.js" />
+    <None Include="wwwroot\scss\style.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildWebCompiler2022" Version="1.14.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
     <PackageReference Include="MySql.Data" Version="8.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
