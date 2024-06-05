@@ -21,17 +21,16 @@ namespace IsmailHilmiAdiguzelProje.Services.Concrete
 
         public async Task<IActionResult> ConnectUser(string Email, string Password)
         {
-            User? user = await _dataContext.users_table.AsQueryable()
-                .Where(x => x.email == Email && x.password == Password)
-                .FirstAsync();
+            IQueryable<User>? user = _dataContext.users_table.AsQueryable()
+                .Where(x => x.email == Email && x.password == Password);
 
-            if (user != null) 
+            if (user.Count() != 0) 
             {
-                return new JsonResult(user);
+                return new JsonResult(await user.FirstAsync());
             }
             else 
             {
-                return new ForbidResult();
+                return new JsonResult(null);
             }
         }
 

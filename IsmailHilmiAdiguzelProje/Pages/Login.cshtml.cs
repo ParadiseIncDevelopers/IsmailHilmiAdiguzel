@@ -38,13 +38,25 @@ namespace IsmailHilmiAdiguzelProje.Pages
             if (ModelState.IsValid) 
             {
                 JsonResult result = (JsonResult) await _userService.ConnectUser(Email, Password);
-                User user = DeserializeObject(result.Value);
-                TempData["NameAndSurname"] = $"{user.name} {user.surname}";
-                return new RedirectToPageResult("/Index");
+
+                if (result.Value == null)
+                {
+                    ModelState.AddModelError("Password", "Your password was false. Please try again.");
+                    return new PageResult();
+                }
+                else 
+                {
+                    User user = DeserializeObject(result.Value);
+                    TempData["NameAndSurname"] = $"{user.name} {user.surname}";
+                    return new RedirectToPageResult("/Index");
+                }
+
+                
             }
             else 
             {
-                return new ForbidResult();
+                ModelState.AddModelError("Email", "Please try again.");
+                return new PageResult();
             }
         }
 

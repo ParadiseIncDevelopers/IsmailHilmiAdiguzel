@@ -6,7 +6,6 @@
     ViewData["SubPageClass"] = "sub_page";
     ViewData["Title"] = "Ana sayfa";
     Dictionary<string, string> images = new();
-
     if (TempData["NameAndSurname"] != null)
     {
         IndexModel.NameAndSurname = TempData["NameAndSurname"].ToString();
@@ -33,6 +32,30 @@
                     }
                     
                 </h2>
+                @{
+                    using (var httpClient = new HttpClient())
+                    {
+                        using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://reklamaction.api.hasoffers.com/Apiv3/json?api_key=16cae276c0765bbe7e451fde1d1cd9bf69c1e8b05d37b1bc8ec25f68868d52de&Target=Affiliate_Affiliate&Method=getAccountBalance"))
+                        {
+                            var httpResponseMessage = await httpClient.SendAsync(request);
+                            var getResult = await httpResponseMessage.Content.ReadAsStringAsync();
+                            var deserializedResponse = JsonSerializer.Deserialize<BalanceDataObject>(getResult);
+
+                            string stringValue = deserializedResponse.Response.Data;
+                            double doubleValue;
+
+                            if (double.TryParse(stringValue, out doubleValue))
+                            {
+                                string formattedValue = doubleValue.ToString("0.00");
+                                <p>@formattedValue</p>
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                    }
+                }
                 <p>
                     Burada tüm linklerimiz bulunmaktadır.
                 </p>
