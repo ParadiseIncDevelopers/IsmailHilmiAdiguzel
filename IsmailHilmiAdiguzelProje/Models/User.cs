@@ -37,5 +37,7 @@ namespace IsmailHilmiAdiguzelProje.Models
         public string? password { get; set; }
         [JsonPropertyName("user_type")]
         public string? user_type { get; set; }
+        [JsonPropertyName("user_type")]
+        public string? phoneNumber { get; set; }
     }
 }
