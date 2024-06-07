@@ -14,9 +14,38 @@ namespace IsmailHilmiAdiguzelProje.Services.Concrete
             _dataContext = dataContext;
         }
 
-        public Task<IActionResult> AddUser()
+        public async Task<IActionResult> AddUser(string name, string surname, string email, string phoneNumber, string password)
         {
-            throw new NotImplementedException();
+            IQueryable<User>? users = _dataContext.users_table.AsQueryable();
+            int userCount = users.Count();
+            IQueryable<User> userEmailFilter = users.Where(x => x.email == email);
+            User user = new()
+            {
+                name = name,
+                surname = surname,
+                email = email,
+                password = password,
+                phoneNumber = phoneNumber,
+                user_type = "USER"
+            };
+
+            if (userCount == 0)
+            {
+                await _dataContext.users_table.AddAsync(user);
+                return new JsonResult(user);
+            }
+            else 
+            {
+                if (userEmailFilter.Any())
+                {
+                    return new JsonResult("ERROR_EMAIL_EXIST");
+                }
+                else 
+                {
+                    await _dataContext.users_table.AddAsync(user);
+                    return new JsonResult(user);
+                }
+            }
         }
 
         public async Task<IActionResult> ConnectUser(string Email, string Password)
@@ -24,7 +53,7 @@ namespace IsmailHilmiAdiguzelProje.Services.Concrete
             IQueryable<User>? user = _dataContext.users_table.AsQueryable()
                 .Where(x => x.email == Email && x.password == Password);
 
-            if (user.Count() != 0) 
+            if (user.Any()) 
             {
                 return new JsonResult(await user.FirstAsync());
             }
