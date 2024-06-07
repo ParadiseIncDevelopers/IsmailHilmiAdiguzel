@@ -6,27 +6,107 @@ using IsmailHilmiAdiguzelProje.Services.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MySql.Data.MySqlClient;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace IsmailHilmiAdiguzelProje.Pages
 {
-    public class IndexModel : PageModel, IJsonObjectSerializer<UserClickCounter>
+    [BindProperties]
+    public class IndexModel : PageModel
     {
         private readonly IUserClickCounterService _userClickCounter;
+        private readonly IUserService _userService;
 
-        public static string NameAndSurname { get; set; }
+        public static string? NameAndSurname { get; set; }
 
-        public IndexModel(IUserClickCounterService userClickCounter)
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [EmailAddress]
+        public string? Email { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string? Name { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string? Surname { get; set; }
+
+        [Required]
+        [RegularExpression(@"^\+[1-9]\d{1,14}$", ErrorMessage = "Invalid phone number")]
+        public string? PhoneNumber { get; set; }
+
+        [Required]
+        public string? Password { get; set; }
+
+        public IndexModel(IUserService userService, IUserClickCounterService userClickCounter)
         {
             _userClickCounter = userClickCounter;
+            _userService = userService;
         }
 
         public void OnGet()
         {
 
         }
-        
+
+        public async Task<IActionResult> OnPostLoginUserAsync()
+        {
+            if (Email == null)
+            {
+                ModelState.AddModelError("Email", "Please try again.");
+            }
+            if (Password == null) 
+            {
+                ModelState.AddModelError("Password", "Please try again.");
+            }
+            else
+            {
+                JsonResult result = (JsonResult) await _userService.ConnectUser(Email, Password);
+
+                if (result.Value == null)
+                {
+                    ModelState.AddModelError("Email", "User not found please try again.");
+                    return new PageResult();
+                }
+                else
+                {
+                    User? user = JsonObjectSerializer<User>.DeserializeObject(result.Value);
+                    TempData["NameAndSurname"] = $"{ user.name } { user.surname }";
+                    return new RedirectToPageResult("/Index");
+                }
+            }
+
+            return new PageResult();
+        }
+
+        public async Task<IActionResult> OnPostRegisterUser()
+        {
+            if (ModelState.IsValid)
+            {
+                User user = new()
+                {
+                    email = Email,
+                    name = Name,
+                    surname = Surname,
+                    password = Password,
+                    phoneNumber = PhoneNumber,
+                    user_type = "USER"
+                };
+
+                await _userService.AddUser(Name, Surname, Email, PhoneNumber, Password);
+                return new JsonResult("Welcome to Hangel.");
+            }
+            else 
+            {
+                ModelState.AddModelError("Email", "User not found please try again.");
+                return new PageResult();
+            }
+        }
 
         public async Task<IActionResult> OnGetCounterClickLink(string clickWebsite, string clickName)
         {
