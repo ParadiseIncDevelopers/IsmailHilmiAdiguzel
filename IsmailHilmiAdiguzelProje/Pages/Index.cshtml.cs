@@ -1,14 +1,10 @@
-using Google.Protobuf.WellKnownTypes;
 using IsmailHilmiAdiguzelProje.Interfaces;
 using IsmailHilmiAdiguzelProje.Models;
 using IsmailHilmiAdiguzelProje.Services.Abstract;
-using IsmailHilmiAdiguzelProje.Services.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MySql.Data.MySqlClient;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace IsmailHilmiAdiguzelProje.Pages
 {
