@@ -6,18 +6,39 @@
     ViewData["SubPageClass"] = "sub_page";
     ViewData["Title"] = "Ana sayfa";
     Dictionary<string, string> images = new();
-
-    if (TempData["NameAndSurname"] != null)
-    {
-        IndexModel.NameAndSurname = TempData["NameAndSurname"].ToString();
-    }
-
-    if
 }
-
 <!-- home-agency start -->
 <section class="hero-1" id="home">
     <div class="bg-overlay-img"></div>
+    @{
+        if (TempData["PrintMessage"] != null)
+        {
+            string? message = TempData["PrintMessage"]?.ToString();
+
+            if (message.StartsWith("ERROR"))
+            {
+                <div class="container">
+                    <div role="alert" class="alert text-white border alert-dismissible">
+                        <div class="d-flex align-items-start">
+                            <span class="badge bg-danger-subtle text-danget align-self-center me-3">Hata!</span>
+                            @{
+                                if (message == "ERROR_EMAIL_NULL" || message == "ERROR_PASSWORD_NULL" || message == "ERROR_USER_NOT_FOUND")
+                                {
+                                    <div class="w-100">Lütfen bağlanmayı tekrar deneyin.</div>
+                                }
+                            }
+
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+            else
+            {
+
+            }
+        }
+    }
     <div class="container">
         <div class="row align-items-center hero-content">
             <div class="col-lg-6">
@@ -218,11 +239,11 @@
                 @{
                     if (IndexModel.NameAndSurname != null)
                     {
-                        <h6 class="subtitle">Hoşgeldiniz : <span class="fw-bold"> @IndexModel.NameAndSurname</span></h6>
+                            <h6 class="subtitle">Hoşgeldiniz : <span class="fw-bold"> @IndexModel.NameAndSurname</span></h6>
                     }
                     else
                     {
-                        <div>Linklerimiz</div>
+                            <div>Linklerimiz</div>
                     }
                 }
                 @{
@@ -242,30 +263,6 @@
                                 {
                                     images.Add(offerId, elements[i]["OfferFile"].Url);
                                 }
-                            }
-                        }
-                    }
-                }
-                @{
-                    using (var httpClient = new HttpClient())
-                    {
-                        using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://reklamaction.api.hasoffers.com/Apiv3/json?api_key=16cae276c0765bbe7e451fde1d1cd9bf69c1e8b05d37b1bc8ec25f68868d52de&Target=Affiliate_Affiliate&Method=getAccountBalance"))
-                        {
-                            var httpResponseMessage = await httpClient.SendAsync(request);
-                            var getResult = await httpResponseMessage.Content.ReadAsStringAsync();
-                            var deserializedResponse = JsonSerializer.Deserialize<BalanceDataObject>(getResult);
-
-                            string stringValue = deserializedResponse.Response.Data;
-                            double doubleValue;
-
-                            if (double.TryParse(stringValue, out doubleValue))
-                            {
-                                string formattedValue = doubleValue.ToString("0.00");
-                                <p class="text-muted">Şu an elimizde bulunan : @formattedValue TRY</p>
-                            }
-                            else
-                            {
-
                             }
                         }
                     }
@@ -294,23 +291,23 @@
 
                             if (percentPayout != 0)
                             {
-                                <div class="col-md-3 col-sm-4 col-4">
-                                    <div class="testimonial-box text-center">
-                                        <div class="card">
-                                            @{
-                                                <div class="card-header card-header-style">
-                                                    @{
+                                    <div class="col-md-3 col-sm-4 col-4">
+                                        <div class="testimonial-box text-center">
+                                            <div class="card">
+                                                @{
+                                                <div class="card-header card-header-style row align-items-center">
+                                                            @{
                                                         string imageKey = elements[i]["Offer"].Id;
                                                         if (images.ContainsKey(imageKey))
                                                         {
-                                                            <img src="@images[imageKey]" alt="" class="card-img-top card-image-style" />
+                                                                        <img src="@images[imageKey]" alt="" class="card-img-top card-image-style" />
                                                         }
-                                                    }
-                                                </div>
-                                                <div class="card-body">
-                                                    @{
-                                                        <h6 class="card-title fs-16 fw-semibold mt-4 mb-0">@elements[i]["Offer"].Name</h6>
-                                                        <p class="card-text text-muted fs-14">@ppInString % </p>
+                                                            }
+                                                        </div>
+                                                        <div class="card-body">
+                                                            @{
+                                                                    <h6 class="card-title fs-16 fw-semibold mt-4 mb-0">@elements[i]["Offer"].Name</h6>
+                                                                    <p class="card-text text-muted fs-14">@ppInString % </p>
                                                         // <a href="javascript:void(0);" onclick="captureClickAndRedirect('@elements[i]["Offer"].Url', '@IndexModel.NameAndSurname')">Tıklayın</a>
 
                                                         using (var httpClient2 = new HttpClient())
@@ -327,25 +324,25 @@
 
                                                                     if (url != null)
                                                                     {
-                                                                        <a href="@url" class="me-2 mb-2 mb-xl-0 btn btn-outline-primary">Tıklayın</a>
+                                                                                    <a href="@url" class="me-2 mb-2 mb-xl-0 btn btn-outline-primary">Tıklayın</a>
                                                                     }
                                                                     else
                                                                     {
-                                                                        <a href="#" class="me-2 mb-2 mb-xl-0 btn btn-outline-primary" onclick="alert('No link over here.')"></a>
+                                                                                    <a href="#" class="me-2 mb-2 mb-xl-0 btn btn-outline-primary" onclick="alert('No link over here.')"></a>
                                                                     }
                                                                 }
                                                                 catch(Exception e)
                                                                 {
-                                                                    <a href="#" class="me-2 mb-2 mb-xl-0 btn btn-outline-primary" onclick="alert('No link over here.')"></a>
+                                                                                <a href="#" class="me-2 mb-2 mb-xl-0 btn btn-outline-primary" onclick="alert('No link over here.')"></a>
                                                                 }
                                                             }
                                                         }
-                                                    }
-                                                </div>
-                                            }
+                                                            }
+                                                        </div>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             }
                         }
                     }
@@ -591,28 +588,31 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
-                <div class="text-center mb-4">
-                    <p class="text-muted fs-15">Lütfen giriş yapınız</p>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">E-posta</label>
-                    <input type="email" class="form-control" name="Email" placeholder="Your email..." />
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Parola</label>
-                    <input type="password" class="form-control" name="Password" />
-                </div>
-                <div class="d-flex justify-content-between align-items-center mb-4 pb-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Beni hatırla
-                        </label>
+                <form asp-page-handler="loginUser" method="post">
+                    <div class="text-center mb-4">
+                        <p class="text-muted fs-15">Lütfen giriş yapınız</p>
                     </div>
-                    <a href="javascript:void(0);" class="text-secondary fs-13">Parolanızı unuttunuz mu?</a>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label">E-posta</label>
+                        <input type="email" class="form-control" name="Email" placeholder="Your email..." />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Parola</label>
+                        <input type="password" class="form-control" name="Password" />
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Beni hatırla
+                            </label>
+                        </div>
+                        <a href="javascript:void(0);" class="text-secondary fs-13">Parolanızı unuttunuz mu?</a>
+                    </div>
 
-                <button type="submit" href="javascript:void(0);" class="btn btn-gradient-primary w-100" data-bs-dismiss="modal">Kaydolun</button>
+                    <button type="submit" href="javascript:void(0);" class="btn btn-gradient-primary w-100">Kaydolun</button>
+
+                </form>
                 
                 <div class="text-center">
                     <div class="position-relative my-4">
@@ -750,7 +750,7 @@
                                     <label class="form-check-label" for="flexCheckDefault1"> I agree to the <a href="javascript:void(0);">Terms of Service</a> and <a href="javascript:void(0);">Privacy Policy</a> </label>
                                 </div>
 
-                                <button type="button" class="btn btn-gradient-primary w-100">Create account</button>
+                                <button type="submit" class="btn btn-gradient-primary w-100">Create account</button>
                             </form>
                         </div>
                         <div class="tab-pane show active" id="form2">
@@ -1101,8 +1101,8 @@
         </div>
     </div>
 </div>
-
 <script>
+    $("#modal-error").modal("show");
     function captureClickAndRedirect(clickWebsite, clickName) 
     {
 

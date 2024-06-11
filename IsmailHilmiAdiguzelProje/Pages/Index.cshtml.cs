@@ -23,11 +23,13 @@ namespace IsmailHilmiAdiguzelProje.Pages
         {
             if (Email == null)
             {
-                ModelState.AddModelError("Email", "Please try again.");
+                TempData["PrintMessage"] = "ERROR_EMAIL_NULL";
+                return new RedirectToPageResult("/Index");
             }
             if (Password == null) 
             {
-                ModelState.AddModelError("Password", "Please try again.");
+                TempData["PrintMessage"] = "ERROR_PASSWORD_NULL";
+                return new RedirectToPageResult("/Index");
             }
             else
             {
@@ -35,8 +37,8 @@ namespace IsmailHilmiAdiguzelProje.Pages
 
                 if (result.Value == null)
                 {
-                    ModelState.AddModelError("Email", "User not found please try again.");
-                    return new PageResult();
+                    TempData["PrintMessage"] = "ERROR_USER_NOT_FOUND";
+                    return new RedirectToPageResult("/Index");
                 }
                 else
                 {
@@ -45,8 +47,6 @@ namespace IsmailHilmiAdiguzelProje.Pages
                     return new RedirectToPageResult("/Index");
                 }
             }
-
-            return new PageResult();
         }
 
         public async Task<IActionResult> OnPostRegisterClassicUser(string classicName, string classicSurname, string classicEmail, string classicProvince, string classicDistrict, string classicNeighborhood, string classicAddress, string classicGender, string classicPassword, string classicPassword2)
@@ -57,10 +57,10 @@ namespace IsmailHilmiAdiguzelProje.Pages
                 name = classicName,
                 surname = classicSurname,
                 gender = Convert.ToInt32(classicGender),
-                user_neighbourhood = classicNeighborhood,
-                user_province = classicProvince,
-                user_district = classicDistrict,
-                user_address = classicAddress,
+                neighbourhood = classicNeighborhood,
+                province = classicProvince,
+                district = classicDistrict,
+                address = classicAddress,
                 password = classicPassword,
                 user_type = 0
             };

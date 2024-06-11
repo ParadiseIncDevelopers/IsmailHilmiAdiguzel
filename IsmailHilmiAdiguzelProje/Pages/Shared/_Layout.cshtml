@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Text.Json
+@using IsmailHilmiAdiguzelProje.Models
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -22,6 +24,8 @@
     <title>@ViewData["Title"] - Hangel</title>
 </head>
 <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="60">
+
+    
 
     <!--Navbar Start-->
     <nav class="navbar navbar-expand-lg fixed-top navbar-custom navbar-light sticky-dark" id="navbar-sticky">
@@ -66,6 +70,79 @@
                         <a href="#" class="btn btn-sm nav-btn" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</a>
                     </li>
                 </ul>
+
+                @{
+                    if (TempData["NameAndSurname"] != null)
+                    {
+                        IndexModel.NameAndSurname = TempData["NameAndSurname"].ToString();
+                        <ul class="d-none d-lg-flex navbar-nav align-items-lg-center mt-4 mt-lg-0">
+
+                            <!-- profile dropdown start -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link py-0" href="#" id="user" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <img src="images/users/user-1.jpg" class="avatar avatar-xs rounded-circle me-2" alt="">
+                                        </div>
+                                        <div class="flex-grow-1 ms-1 lh-base">
+                                            <span class="fw-semibold fs-13 d-block line-height-normal">@IndexModel.NameAndSurname</span>
+                                            @{
+                                                using (var httpClient = new HttpClient())
+                                                {
+                                                    using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://reklamaction.api.hasoffers.com/Apiv3/json?api_key=16cae276c0765bbe7e451fde1d1cd9bf69c1e8b05d37b1bc8ec25f68868d52de&Target=Affiliate_Affiliate&Method=getAccountBalance"))
+                                                    {
+                                                        var httpResponseMessage = await httpClient.SendAsync(request);
+                                                        var getResult = await httpResponseMessage.Content.ReadAsStringAsync();
+                                                        var deserializedResponse = JsonSerializer.Deserialize<AccountBalance>(getResult);
+                                                        string elements = deserializedResponse.Response.Data;
+                                                        <span class="text-muted fs-13">@elements TRY</span>
+                                                    }
+                                                }
+                                            }
+
+                                            
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <div class="dropdown-menu p-2 dropdown-menu-end" aria-labelledby="user">
+                                    <!-- item start -->
+                                    <a class="dropdown-item p-2" href="#">
+                                        <i class="mdi mdi-account-outline fs-20 lh-1 align-middle me-1"></i>
+                                        Profil
+                                    </a>
+                                    <!-- item end -->
+                                    <!-- item start -->
+                                    <a class="dropdown-item p-2" href="#">
+                                        <i class="mdi mdi-cog-outline fs-20 lh-1 align-middle me-1"></i>
+                                        Ayarlar
+                                    </a>
+                                    <!-- item end -->
+                                    <!-- item start -->
+                                    <a class="dropdown-item p-2" href="#">
+                                        <i class="mdi mdi-microphone fs-20 lh-1 align-middle me-1"></i>
+                                        Destek
+                                    </a>
+                                    <!-- item end -->
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <!-- item start -->
+                                    <a class="dropdown-item p-2" href="#">
+                                        <i class="mdi mdi-lock-open-outline fs-20 lh-1 align-middle me-1"></i>
+                                        Çıkış
+                                    </a>
+                                    <!-- item end -->
+                                </div>
+                            </li>
+                            <!-- profile dropdown end -->
+                        </ul>
+                    }
+
+
+                }
+
+                
             </div>
         </div>
     </nav>

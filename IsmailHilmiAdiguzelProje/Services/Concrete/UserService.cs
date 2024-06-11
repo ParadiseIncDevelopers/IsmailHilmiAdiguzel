@@ -14,20 +14,11 @@ namespace IsmailHilmiAdiguzelProje.Services.Concrete
             _dataContext = dataContext;
         }
 
-        public async Task<IActionResult> AddUser(string name, string surname, string email, string phoneNumber, string password)
+        public async Task<IActionResult> AddUser(User user, string password2)
         {
             IQueryable<User>? users = _dataContext.users_table.AsQueryable();
             int userCount = users.Count();
-            IQueryable<User> userEmailFilter = users.Where(x => x.email == email);
-            User user = new()
-            {
-                name = name,
-                surname = surname,
-                email = email,
-                password = password,
-                phoneNumber = phoneNumber,
-                user_type = "USER"
-            };
+            IQueryable<User> userEmailFilter = users.Where(x => x.email == user.email);
 
             if (userCount == 0)
             {
@@ -42,8 +33,15 @@ namespace IsmailHilmiAdiguzelProje.Services.Concrete
                 }
                 else 
                 {
-                    await _dataContext.users_table.AddAsync(user);
-                    return new JsonResult(user);
+                    if (user.password == password2)
+                    {
+                        await _dataContext.users_table.AddAsync(user);
+                        return new JsonResult("SUCCESS_USER_CREATED");
+                    }
+                    else 
+                    {
+                        return new JsonResult("ERROR_PASSWORD_NOT_EQUAL");
+                    }
                 }
             }
         }

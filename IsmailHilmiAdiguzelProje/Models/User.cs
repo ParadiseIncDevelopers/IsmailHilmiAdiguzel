@@ -9,7 +9,7 @@ namespace IsmailHilmiAdiguzelProje.Models
     public class User 
     {
         [JsonPropertyName("id")]
-        public Guid id { get; set; } = Guid.NewGuid();
+        public int id { get; set; }
         [JsonPropertyName("name")]
         public string? name { get; set; }
         [JsonPropertyName("surname")]
@@ -20,16 +20,14 @@ namespace IsmailHilmiAdiguzelProje.Models
         public string? password { get; set; }
         [JsonPropertyName("user_type")]
         public int? user_type { get; set; }
-        [JsonPropertyName("user_province")]
-        public string? user_province { get; set; }
-        [JsonPropertyName("user_city")]
-        public string? user_city { get; set; }
-        [JsonPropertyName("user_district")]
-        public string? user_district { get; set; }
-        [JsonPropertyName("user_neighbourhood")]
-        public string? user_neighbourhood { get; set; }
-        [JsonPropertyName("user_address")]
-        public string? user_address { get; set; }
+        [JsonPropertyName("province")]
+        public string? province { get; set; }
+        [JsonPropertyName("district")]
+        public string? district { get; set; }
+        [JsonPropertyName("neighbourhood")]
+        public string? neighbourhood { get; set; }
+        [JsonPropertyName("address")]
+        public string? address { get; set; }
         [JsonPropertyName("gender")]
         public int? gender { get; set; }
 
