@@ -9,5 +9,6 @@ namespace IsmailHilmiAdiguzelProje
     {
         public DbSet<User> users_table { get; set; }
         public DbSet<UserClickCounter> users_clicks_counters { get; set; }
+        public DbSet<OrganisationUser> organisations { get; set; }
     }
 }
