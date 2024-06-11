@@ -1081,14 +1081,14 @@ html {
 
 .navbar.navbar-light .logo .logo-dark {
     display: none;
-    width: 204px;
-    height: 102px;
+    width: 102px;
+    height: 51px;
 }
 
 .navbar.navbar-light .logo .logo-light {
     display: block;
-    width: 204px;
-    height: 102px;
+    width: 102px;
+    height: 51px;
 }
 
 /********** navbar sticky *********/

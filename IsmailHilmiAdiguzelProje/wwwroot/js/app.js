@@ -1,12 +1,3 @@
-/* Theme Name: Appexy - Responsive bootsrap 4 Landing Page Template
-   Author: Coderthemes
-   Version: 1.0.0
-   Created: May 2018
-   File Description: Main Js file of the template
-*/
-
-
-
 // Sticky Navbar
 
 function windowScroll() {
@@ -48,5 +39,5 @@ function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));

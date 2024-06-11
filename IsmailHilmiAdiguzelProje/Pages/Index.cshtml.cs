@@ -3,54 +3,23 @@ using IsmailHilmiAdiguzelProje.Models;
 using IsmailHilmiAdiguzelProje.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace IsmailHilmiAdiguzelProje.Pages
 {
-    [BindProperties]
-    public class IndexModel : PageModel
+    public class IndexModel(IUserService userService, IUserClickCounterService userClickCounter) : PageModel
     {
-        private readonly IUserClickCounterService _userClickCounter;
-        private readonly IUserService _userService;
+        private readonly IUserClickCounterService _userClickCounter = userClickCounter;
+        private readonly IUserService _userService = userService;
 
         public static string? NameAndSurname { get; set; }
-
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        [EmailAddress]
-        public string? Email { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string? Name { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string? Surname { get; set; }
-
-        [Required]
-        [RegularExpression(@"^\+[1-9]\d{1,14}$", ErrorMessage = "Invalid phone number")]
-        public string? PhoneNumber { get; set; }
-
-        [Required]
-        public string? Password { get; set; }
-
-        public IndexModel(IUserService userService, IUserClickCounterService userClickCounter)
-        {
-            _userClickCounter = userClickCounter;
-            _userService = userService;
-        }
 
         public void OnGet()
         {
 
         }
 
-        public async Task<IActionResult> OnPostLoginUserAsync()
+        public async Task<IActionResult> OnPostLoginUserAsync(string Email, string Password)
         {
             if (Email == null)
             {
@@ -80,28 +49,35 @@ namespace IsmailHilmiAdiguzelProje.Pages
             return new PageResult();
         }
 
-        public async Task<IActionResult> OnPostRegisterUser()
+        public async Task<IActionResult> OnPostRegisterClassicUser(string classicName, string classicSurname, string classicEmail, string classicProvince, string classicDistrict, string classicNeighborhood, string classicAddress, string classicGender, string classicPassword, string classicPassword2)
         {
-            if (ModelState.IsValid)
+            User user = new()
             {
-                User user = new()
-                {
-                    email = Email,
-                    name = Name,
-                    surname = Surname,
-                    password = Password,
-                    phoneNumber = PhoneNumber,
-                    user_type = "USER"
-                };
+                email = classicEmail,
+                name = classicName,
+                surname = classicSurname,
+                gender = Convert.ToInt32(classicGender),
+                user_neighbourhood = classicNeighborhood,
+                user_province = classicProvince,
+                user_district = classicDistrict,
+                user_address = classicAddress,
+                password = classicPassword,
+                user_type = 0
+            };
 
-                await _userService.AddUser(Name, Surname, Email, PhoneNumber, Password);
-                return new JsonResult("Welcome to Hangel.");
-            }
-            else 
-            {
-                ModelState.AddModelError("Email", "User not found please try again.");
-                return new PageResult();
-            }
+            object result = await _userService.AddUser(user, classicPassword2);
+            TempData["PrintMessage"] = result.ToString();
+            return new JsonResult(result);
+        }
+
+        public async Task<IActionResult> OnPostRegisterOrganisationUser(string organisationName, string organisationFullName, string organisationWebsite, string organisationPhoneNumber, string organisationProvince, string organisationCity, string organisationNeighbourhood, string organiastionBarcode, string organiastionWorkDomain, string organiastionTaxNumber, string organisationBank, string organisationIban, string organisationMainWorkDomain, string organisationCategory, string organisationUnDomain, string organisationType, string organisationPassword, string organisationPassword2, string organisationUserName, string organisationUserSurname, string organisationUserPhoneNumber, string organisationUserEmail, string organisationUserDomain) 
+        {
+            return new JsonResult("");
+        }
+
+        public async Task<IActionResult> OnPostRegisterBrandUser() 
+        {
+            return new JsonResult("");
         }
 
         public async Task<IActionResult> OnGetCounterClickLink(string clickWebsite, string clickName)
@@ -129,7 +105,7 @@ namespace IsmailHilmiAdiguzelProje.Pages
             
         }
 
-        public UserClickCounter DeserializeObject(object value)
+        public UserClickCounter? DeserializeObject(object value)
         {
             JsonSerializerOptions options = new() { WriteIndented = true };
             string serializedString = JsonSerializer.Serialize((UserClickCounter) value, options);
