@@ -6,27 +6,10 @@ using System.Text.Json.Serialization;
 namespace IsmailHilmiAdiguzelProje.Models
 {
     [Serializable]
-    public class UserClickCounter
-    {
-        [Key]
-        [JsonPropertyName("id")]
-        public int id { get; set; }
-
-        [JsonPropertyName("click_website")]
-        public string? click_website { get; set; }
-
-        [JsonPropertyName("click_date")]
-        public DateTime click_date { get; set; }
-
-        [JsonPropertyName("click_name")]
-        public string? click_name { get; set; }
-    }
-
-    [Serializable]
     public class User 
     {
         [JsonPropertyName("id")]
-        public int id { get; set; }
+        public Guid id { get; set; } = Guid.NewGuid();
         [JsonPropertyName("name")]
         public string? name { get; set; }
         [JsonPropertyName("surname")]
@@ -36,8 +19,19 @@ namespace IsmailHilmiAdiguzelProje.Models
         [JsonPropertyName("password")]
         public string? password { get; set; }
         [JsonPropertyName("user_type")]
-        public string? user_type { get; set; }
-        [JsonPropertyName("user_type")]
-        public string? phoneNumber { get; set; }
+        public int? user_type { get; set; }
+        [JsonPropertyName("user_province")]
+        public string? user_province { get; set; }
+        [JsonPropertyName("user_city")]
+        public string? user_city { get; set; }
+        [JsonPropertyName("user_district")]
+        public string? user_district { get; set; }
+        [JsonPropertyName("user_neighbourhood")]
+        public string? user_neighbourhood { get; set; }
+        [JsonPropertyName("user_address")]
+        public string? user_address { get; set; }
+        [JsonPropertyName("gender")]
+        public int? gender { get; set; }
+
     }
 }

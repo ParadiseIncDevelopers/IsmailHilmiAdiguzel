@@ -1,10 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using IsmailHilmiAdiguzelProje.Interfaces;
+using System.Text.Json.Serialization;
 
 namespace IsmailHilmiAdiguzelProje.Models
 {
 
     [Serializable]
-    public class BalanceDataResponse
+    public class BalanceDataResponse : IJsonDataObjectGetter<string>
     {
         [JsonPropertyName("status")]
         public int Status { get; set; }
@@ -23,7 +24,7 @@ namespace IsmailHilmiAdiguzelProje.Models
     }
 
     [Serializable]
-    public class BalanceDataObject
+    public class BalanceDataObject : IJsonResponseGetter<BalanceDataResponse>
     {
         [JsonPropertyName("request")]
         public Dictionary<string, object>? Request { get; set; }

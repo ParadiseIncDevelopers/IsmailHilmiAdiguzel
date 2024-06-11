@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using IsmailHilmiAdiguzelProje.Interfaces;
+using System.Text.Json.Serialization;
 
 namespace IsmailHilmiAdiguzelProje.Models
 {
@@ -68,7 +69,7 @@ namespace IsmailHilmiAdiguzelProje.Models
     }
 
     [Serializable]
-    public class ImageDataResponse
+    public class ImageDataResponse : IJsonDataObjectGetter<ImageData>
     {
         [JsonPropertyName("status")]
         public int Status { get; set; }
@@ -87,7 +88,7 @@ namespace IsmailHilmiAdiguzelProje.Models
     }
 
     [Serializable]
-    public class ImageDataObject
+    public class ImageDataObject : IJsonResponseGetter<ImageDataResponse>
     {
         [JsonPropertyName("request")]
         public Dictionary<string, object>? Request { get; set; }
